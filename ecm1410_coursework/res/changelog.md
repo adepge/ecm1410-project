@@ -16,4 +16,4 @@ Added [Diagram 3](https://github.com/adepge/social-media-backend-uok/blob/main/e
 #### 01/03/23 - Development session 2
 Main objective: Classes
 
-**720052156 (Ben)**:
+**720052156 (Ben)**: 4 class files added. For details, [view pull request](https://github.com/adepge/social-media-backend-uok/pull/1)
