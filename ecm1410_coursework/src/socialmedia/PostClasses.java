@@ -22,5 +22,3 @@ public class PostClasses {
         } catch (HandleNotRecognisedException ex) {
             System.out.println("Handle doesn't exist");
         }
-    }
-}
