@@ -1,17 +1,24 @@
-import java.util.ArrayList;
+package socialmedia;
 public class PostClasses {
     public static void main(String[] args) {
-        OriginalPost newPost;
-		newPost = new OriginalPost("Howdy", "Ben");
-        System.out.println(newPost.getPostID());
-        System.out.println(newPost.getHandle());
-        System.out.println(newPost.getMessage());
-        if(newPost instanceof OriginalPost == true) {
-            System.out.println("This post is an original post");
-        }		
-        if(newPost instanceof Post == true) {
-         System.out.println("This post is a post");
+        SocialMedia socialmedia;
+        socialmedia = new SocialMedia();
+        try {
+            System.out.println(socialmedia.createAccount("Adam", "Hello welcome to my account"));
+            System.out.println(socialmedia.createAccount("Team", "Hello welcome to my account"));
+            System.out.println(socialmedia.createAccount("Sean", "Hello welcome to my account"));
+            System.out.println(socialmedia.createAccount("Ben", "Hello welcome to my account"));
+            System.out.println(socialmedia.createAccount("Dan", "Hello welcome to my account"));
+            socialmedia.changeAccountHandle("Tom","Thomas");
+            for (int i=0;i<socialmedia.Accounts.size();i++){
+                System.out.println(socialmedia.Accounts.get(i).getHandle());
+                System.out.println(socialmedia.Accounts.get(i).description);
+                System.out.println(socialmedia.Accounts.get(i).getAccountID());
+            }
+        } catch (InvalidHandleException ex) {
+            System.out.println("Invalid handle");
+        } catch (IllegalHandleException ex) {
+            System.out.println("Handle has already been chosen");
+        } catch (HandleNotRecognisedException ex) {
+            System.out.println("Handle doesn't exist");
         }
-
-    }
-}

@@ -12,3 +12,4 @@ A social media platform backend written in Java for the University of Knowledge 
 
 720022715 (Adam): ag990@exeter.ac.uk  
 720052156 (Ben): be286@exeter.ac.uk
+

@@ -1,7 +1,8 @@
+package socialmedia;
 public class Endorsement extends Post{
-    private String parentID;
+    private long parentID;
     public Endorsement(String handle, long PostID){
-        referenceID = PostID;
+        parentID = PostID;
         this.PostID = numberofPosts++;
         this.handle = handle;   
     }

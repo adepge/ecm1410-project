@@ -1,8 +1,9 @@
+package socialmedia;
 public class Comment extends Post{
-    private String parentID;
+    private long parentID;
     public void Comment(String handle, long PostID, String message){
         this.message = message;
-        referenceID = PostID;
+        parentID = PostID;
         this.PostID = numberofPosts++;
         this.handle = handle;   
     }

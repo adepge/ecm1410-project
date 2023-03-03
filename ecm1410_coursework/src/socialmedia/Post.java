@@ -1,5 +1,6 @@
+package socialmedia;
 public abstract class Post {
-    static final int CHARACTERLIMIT = 100;
+    static final int CHARACTER_LIMIT = 100;
     static long numberofPosts = 0;
     long PostID;
     String handle;
