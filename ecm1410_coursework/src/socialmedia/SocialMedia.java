@@ -1,4 +1,5 @@
 package socialmedia;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -10,7 +11,18 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class SocialMedia implements SocialMediaPlatform {
-    public ArrayList<Account> Accounts = new ArrayList<>();
+    private static ArrayList<Account> Accounts = new ArrayList<>();
+
+    public int indexByHandle(String handle) throws HandleNotRecognisedException{
+        if (handleExist(handle)){
+            for (int i=0; i<Accounts.size(); i++){
+                if (Accounts.get(i).getHandle().equals(handle)){
+                    return Accounts.get(i).getAccountID();
+                }
+            }
+        }
+        throw new HandleNotRecognisedException();
+    }
     public boolean stringExceedsLimit(int limit, String input) {
         if (input.length() > limit) {
             return true;
@@ -21,9 +33,21 @@ public class SocialMedia implements SocialMediaPlatform {
         }
     }
     public boolean handleExist(String handle){
-        for (int i=0;i < Accounts.size();i++){
-            if (Accounts.get(i).getHandle().equals(handle)){
-                return true;
+        if (handle != "[DELETED]") {
+            for (int i = 0; i < Accounts.size(); i++) {
+                if (Accounts.get(i).getHandle().equals(handle)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean idExist(int id){
+        if (id != -1) {
+            for (int i = 0; i < Accounts.size(); i++) {
+                if (Accounts.get(i).getAccountID() == id) {
+                    return true;
+                }
             }
         }
         return false;
@@ -62,15 +86,25 @@ public class SocialMedia implements SocialMediaPlatform {
 
     @Override
     public void removeAccount(int id) throws AccountIDNotRecognisedException {
-        // TODO Auto-generated method stub
+        if (idExist(id)){
+            Accounts.get(id).delete();
+        }  else {
+            throw new AccountIDNotRecognisedException();
+        }
 
+        // ADD POST DELETION FOR POSTS AND ENDORSEMENTS (LIKELY ALSO COMMENTS)
     }
 
     @Override
     public void removeAccount(String handle) throws HandleNotRecognisedException {
-        // TODO Auto-generated method stub
-
+        if (!handleExist(handle)) {
+            throw new HandleNotRecognisedException();
+        } else {
+            Accounts.get(indexByHandle(handle)).delete();
+        }
+        // ADD POST DELETION FOR POSTS AND ENDORSEMENTS (LIKELY ALSO COMMENTS)
     }
+
 
     @Override
     public void changeAccountHandle(String oldHandle, String newHandle)
@@ -93,15 +127,34 @@ public class SocialMedia implements SocialMediaPlatform {
     }
 
     @Override
-    public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException {
-        // TODO Auto-generated method stub
-
+    public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException/*,  InvalidDescriptionException */{
+        if (!handleExist(handle)) {
+            throw new HandleNotRecognisedException();
+//        } else if (stringExceedsLimit(Account.DESC_CHAR_LIMIT,description)) {
+//            throw new InvalidDescriptionException();
+        } else {
+            for (int i = 0; i < Accounts.size(); i++) {
+                if (Accounts.get(i).getHandle().equals(handle)) {
+                    Accounts.get(i).setDescription(description);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     public String showAccount(String handle) throws HandleNotRecognisedException {
-        // TODO Auto-generated method stub
-        return null;
+        if (handleExist(handle)){
+            Account subjectAccount = Accounts.get(indexByHandle(handle));
+            String info = "ID: " + Integer.toString(subjectAccount.getAccountID()) +
+                    "\n" + "Handle: " + subjectAccount.getHandle() +
+                    "\n" + "Description: " + subjectAccount.getDescription() /*+
+                "\n" + "Posts: "  + NUMBER OF POSTS SUBJECT HAS MADE +
+                "\n" + "Endorsements: "  + NUMBER OF ENDORSEMENTS SUBJECT HAS RECEIVED*/;
+            return info;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -145,9 +198,15 @@ public class SocialMedia implements SocialMediaPlatform {
 
     @Override
     public int getNumberOfAccounts() {
-        // TODO Auto-generated method stub
-        return 0;
+        int counter = 0;
+        for (int i = 0; i < Accounts.size(); i++) {
+            if (Accounts.get(i).getAccountID() != -1) {
+                counter += 1;
+            }
+        }
+        return counter;
     }
+
 
     @Override
     public int getTotalOriginalPosts() {
