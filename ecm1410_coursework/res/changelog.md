@@ -1,5 +1,6 @@
 ## Development changelog
 
+Main objective: Classes
 #### 22/02/23 | Development session 1
 Main objective: OO Design
 
@@ -14,6 +15,25 @@ Added [Diagram 3](https://github.com/adepge/social-media-backend-uok/blob/main/e
 
 ***
 #### 01/03/23 - Development session 2
-Main objective: Classes
 
 **720052156 (Ben)**: 4 class files added. For details, [view pull request](https://github.com/adepge/social-media-backend-uok/pull/1)
+
+***
+#### 03/03/23 - Development session 3
+Main objective: SocialMedia Class
+
+**720022715 (Adam)**: 2 class files added. For details, [view pull request](https://github.com/adepge/social-media-backend-uok/pull/2)
+
+***
+
+#### 07/03/23 - Development session 4
+Main objective: SocialMedia Class
+
+**720052156 (Ben)**: 5 implemented methods. Committed directly to main branch.
+
+***
+
+#### 08/03/23 - Development session 5
+Main objective: SocialMedia Class, Optimization
+
+**720052156 (Adam)**: 2 implemented methods. Committed directly to main branch.

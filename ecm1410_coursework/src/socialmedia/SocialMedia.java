@@ -12,15 +12,30 @@ import java.util.Map;
  * @version 1.0
  */
 public class SocialMedia implements SocialMediaPlatform {
-//    private static ArrayList<Account> Accounts = new ArrayList<>();
-//    private static ArrayList<Post> Posts = new ArrayList<>();
 
-//    private Map<String, Account> Accounts = new HashMap<>();
+    /**
+     * Key-value pair hashmap of account IDs to Account objects.
+     */
     private Map<Integer,Account> accountIDs = new HashMap<>();
+
+    /**
+     * Key-value pair hashmap of account handles to Account objects.
+     */
     private Map<String,Account> accountHandles = new HashMap<>();
+
+    /**
+     * Key-value pair hashmap of post IDs to Post objects.
+     */
     private Map<Integer,Post> Posts = new HashMap<>();
 
-
+    /**
+     * This method checks if input string exceeds given character limit.
+     * Only returns true if string exceeds limit, or is empty.
+     *
+     * @param limit character limit.
+     * @param input string text.
+     * @return boolean if string exceeds character limit.
+     */
     public boolean stringExceedsLimit(int limit, String input) {
         if (input.length() > limit) {
             return true;
