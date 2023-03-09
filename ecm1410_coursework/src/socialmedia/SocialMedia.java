@@ -5,22 +5,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * SocialMedia is a minimally compiling, but non-functioning implementor of
+ * SocialMedia is a minimally compiling, functioning implementor of
  * the SocialMediaPlatform interface.
  *
- * @author Diogo Pacheco
- * @version 1.0
+ * @author Adam George
+ * @author Ben Ellison
+ * @version 03-03-2023
  */
 public class SocialMedia implements SocialMediaPlatform {
-//    private static ArrayList<Account> Accounts = new ArrayList<>();
-//    private static ArrayList<Post> Posts = new ArrayList<>();
 
-//    private Map<String, Account> Accounts = new HashMap<>();
+    /**
+     * Key-value pair hashmap of account IDs to Account objects.
+     */
     private Map<Integer,Account> accountIDs = new HashMap<>();
+
+    /**
+     * Key-value pair hashmap of account handles to Account objects.
+     */
     private Map<String,Account> accountHandles = new HashMap<>();
+
+    /**
+     * Key-value pair hashmap of post IDs to Post objects.
+     */
     private Map<Integer,Post> Posts = new HashMap<>();
 
-
+    /**
+     * This method checks if input string exceeds given character limit.
+     * Only returns true if string exceeds limit, or is empty.
+     *
+     * @param limit character limit.
+     * @param input string text.
+     * @return boolean if string exceeds character limit.
+     */
     public boolean stringExceedsLimit(int limit, String input) {
         if (input.length() > limit) {
             return true;
@@ -99,6 +115,8 @@ public class SocialMedia implements SocialMediaPlatform {
             throw new IllegalHandleException();
         } else {
             accountHandles.get(oldHandle).setHandle(newHandle);
+            accountHandles.put(newHandle,accountHandles.get(oldHandle));
+            accountHandles.remove(oldHandle);
         }
     }
 
@@ -137,8 +155,8 @@ public class SocialMedia implements SocialMediaPlatform {
         }
         else {
             OriginalPost newPost = new OriginalPost(handle,message);
-            Posts.put(newPost.PostID,newPost);
-            return newPost.PostID;
+            Posts.put(newPost.postID,newPost);
+            return newPost.postID;
         }
     }
 
