@@ -4,8 +4,8 @@ package socialmedia;
  * The Account class is used to create accounts and implements
  * methods to access an accounts' relevant identifying information
  *
- * @author Ben Ellison
  * @author Adam George
+ * @author Ben Ellison
  * @version 09-03-2023
  */
 public class Account {
@@ -24,14 +24,14 @@ public class Account {
     /** Optional text description for each account. */
     private String description;
 
-    /** The sequential numerical ID of the account. */
+    /** The total number of Account objects created (including deleted accounts). */
     public static int numberOfAccounts = 0;
 
     /**
      * Constructor which creates an Account object.
      * Assigns a sequentially incrementing account ID.
      *
-     * @param handle account's handle
+     * @param handle account's handle.
      */
     public Account(String handle){
         this.handle = handle;

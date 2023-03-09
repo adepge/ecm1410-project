@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * SocialMedia is a minimally compiling, but non-functioning implementor of
+ * SocialMedia is a minimally compiling, functioning implementor of
  * the SocialMediaPlatform interface.
  *
- * @author Diogo Pacheco
- * @version 1.0
+ * @author Adam George
+ * @author Ben Ellison
+ * @version 03-03-2023
  */
 public class SocialMedia implements SocialMediaPlatform {
 
@@ -114,6 +115,8 @@ public class SocialMedia implements SocialMediaPlatform {
             throw new IllegalHandleException();
         } else {
             accountHandles.get(oldHandle).setHandle(newHandle);
+            accountHandles.put(newHandle,accountHandles.get(oldHandle));
+            accountHandles.remove(oldHandle);
         }
     }
 
@@ -152,8 +155,8 @@ public class SocialMedia implements SocialMediaPlatform {
         }
         else {
             OriginalPost newPost = new OriginalPost(handle,message);
-            Posts.put(newPost.PostID,newPost);
-            return newPost.PostID;
+            Posts.put(newPost.postID,newPost);
+            return newPost.postID;
         }
     }
 
