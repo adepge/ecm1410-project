@@ -50,6 +50,7 @@ public abstract class Post {
     public final String getAuthor(){
         return author;
     }
+
     public void delete(){}
     public void erase(){}
     public void save(){}

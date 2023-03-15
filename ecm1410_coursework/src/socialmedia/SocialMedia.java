@@ -88,8 +88,14 @@ public class SocialMedia implements SocialMediaPlatform {
             accountHandles.remove(accountIDs.get(id).getHandle());
             accountIDs.remove(id);
         }
+        for (Post value : Posts.values()){
+            if (accountHandles.get(value.getAuthor()).getAccountID() == id ){
+                try {
+                    deletePost(value.getPostID());
+                } catch (PostIDNotRecognisedException ignored){}
+            }
+        }
 
-        // ADD POST DELETION FOR POSTS AND ENDORSEMENTS (LIKELY ALSO COMMENTS)
     }
 
     @Override
@@ -100,7 +106,13 @@ public class SocialMedia implements SocialMediaPlatform {
             accountIDs.remove(accountHandles.get(handle).getAccountID());
             accountHandles.remove(handle);
         }
-        // ADD POST DELETION FOR POSTS AND ENDORSEMENTS (LIKELY ALSO COMMENTS)
+        for (Post value : Posts.values()){
+            if (accountHandles.get(value.getAuthor()).equals(handle) ){
+                try {
+                    deletePost(value.getPostID());
+                } catch (PostIDNotRecognisedException ignored){}
+            }
+        }
     }
 
 
@@ -165,22 +177,52 @@ public class SocialMedia implements SocialMediaPlatform {
             throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
         if (accountHandles.get(handle) == null) {
             throw new HandleNotRecognisedException();
+        } else if (Posts.get(id) == null){
+            throw new PostIDNotRecognisedException();
+        } else if (Posts.get(id) instanceof Endorsement) {
+            throw new NotActionablePostException();
+        } else {
+            Endorsement newEndorsement = new Endorsement(handle, id);
+            Posts.put(id, newEndorsement);
+            return newEndorsement.getPostID();
         }
-        return 0;
     }
 
     @Override
     public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
             PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
-        // TODO Auto-generated method stub
-        return 0;
+        if (accountHandles.get(handle) == null) {
+            throw new HandleNotRecognisedException();
+        } else if (Posts.get(id) == null){
+            throw new PostIDNotRecognisedException();
+        } else if (Posts.get(id) instanceof Endorsement) {
+            throw new NotActionablePostException();
+        }else if(message.length() > Post.POST_CHAR_LIMIT){
+            throw new InvalidPostException();
+        } else {
+            Comment newComment = new Comment(handle, id, message);
+            Posts.put(id, newComment);
+            return newComment.getPostID();
+        }
     }
 
     @Override
     public void deletePost(int id) throws PostIDNotRecognisedException {
-        // TODO Auto-generated method stub
-
+        if (accountIDs.get(id) == null){
+            throw new PostIDNotRecognisedException();
+        } else {
+            Posts.remove(id);
+            for (Post value : Posts.values()){
+                if (value instanceof Comment && ((Comment) value).getParent() == id) {
+                    ((Comment) value).setParentDeleted();
+                } else if (value instanceof Endorsement && ((Endorsement) value).getParent() == id){
+                    Posts.remove(value.getPostID());
+                }
+            }
+        }
     }
+
+
 
     @Override
     public String showIndividualPost(int id) throws PostIDNotRecognisedException {
@@ -203,20 +245,35 @@ public class SocialMedia implements SocialMediaPlatform {
 
     @Override
     public int getTotalOriginalPosts() {
-        // TODO Auto-generated method stub
-        return 0;
+        int counter = 0;
+        for(Post value : Posts.values()){
+            if (value instanceof OriginalPost){
+                counter += 1;
+            }
+        }
+        return counter;
     }
 
     @Override
     public int getTotalEndorsmentPosts() {
-        // TODO Auto-generated method stub
-        return 0;
+        int counter = 0;
+        for(Post value : Posts.values()){
+            if (value instanceof Endorsement){
+                counter += 1;
+            }
+        }
+        return counter;
     }
 
     @Override
     public int getTotalCommentPosts() {
-        // TODO Auto-generated method stub
-        return 0;
+        int counter = 0;
+        for(Post value : Posts.values()){
+            if (value instanceof Comment){
+                counter += 1;
+            }
+        }
+        return counter;
     }
 
     @Override
