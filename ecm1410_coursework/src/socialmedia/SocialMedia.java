@@ -30,6 +30,11 @@ public class SocialMedia implements SocialMediaPlatform {
     private Map<Integer,Post> Posts = new HashMap<>();
 
     /**
+     * Key-value pair hashmap of post IDs to the number of endorsements the post under that ID has.
+     */
+    private Map<Integer,Integer> endorsementLeaderboard = new HashMap<>();
+
+    /**
      * This method checks if input string exceeds given character limit.
      * Only returns true if string exceeds limit, or is empty.
      *
@@ -136,8 +141,6 @@ public class SocialMedia implements SocialMediaPlatform {
     public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException/*,  InvalidDescriptionException */{
         if (accountHandles.get(handle) == null) {
             throw new HandleNotRecognisedException();
-//        } else if (stringExceedsLimit(Account.DESC_CHAR_LIMIT,description)) {
-//            throw new InvalidDescriptionException();
         } else {
             accountHandles.get(handle).setDescription(description);
         }
@@ -167,8 +170,9 @@ public class SocialMedia implements SocialMediaPlatform {
         }
         else {
             OriginalPost newPost = new OriginalPost(handle,message);
-            Posts.put(newPost.postID,newPost);
-            return newPost.postID;
+            Posts.put(newPost.getPostID(),newPost);
+            endorsementLeaderboard.put(newPost.getPostID(), 0);
+            return newPost.getPostID();
         }
     }
 
@@ -184,6 +188,7 @@ public class SocialMedia implements SocialMediaPlatform {
         } else {
             Endorsement newEndorsement = new Endorsement(handle, id);
             Posts.put(id, newEndorsement);
+            endorsementLeaderboard.put(id, endorsementLeaderboard.get(id) + 1);
             return newEndorsement.getPostID();
         }
     }
@@ -201,7 +206,8 @@ public class SocialMedia implements SocialMediaPlatform {
             throw new InvalidPostException();
         } else {
             Comment newComment = new Comment(handle, id, message);
-            Posts.put(id, newComment);
+            Posts.put(newComment.getPostID(), newComment);
+            endorsementLeaderboard.put(newComment.getPostID(), 0);
             return newComment.getPostID();
         }
     }
@@ -278,16 +284,44 @@ public class SocialMedia implements SocialMediaPlatform {
 
     @Override
     public int getMostEndorsedPost() {
-        // TODO Auto-generated method stub
-        return 0;
+        int highestValue = 0;
+        for (int value : endorsementLeaderboard.values()){
+            if (value > highestValue) {
+                highestValue = value;
+            }
+        }
+        for (int key : endorsementLeaderboard.keySet()){
+            if (endorsementLeaderboard.get(key) == highestValue){
+                return key;
+            }
+        }
+        return -1;
     }
 
     @Override
     public int getMostEndorsedAccount() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+        Map<String, Integer> accountEndorsements = new HashMap<>();
+        for (Post value : Posts.values()) {
+            if (accountEndorsements.containsKey(value.getAuthor())) {
+                accountEndorsements.put(value.getAuthor(), accountEndorsements.get(value.getAuthor()) + endorsementLeaderboard.get(value.getPostID()));
+            } else {
+                accountEndorsements.put(value.getAuthor(), value.getPostID());
+            }
 
+        }
+        int highestValue = 0;
+        for (int value : accountEndorsements.values()){
+            if (value > highestValue) {
+                highestValue = value;
+            }
+        }
+        for (String key : accountEndorsements.keySet()){
+            if (accountEndorsements.get(key) == highestValue){
+                return accountHandles.get(key).getAccountID() ;
+            }
+        }
+        return -1;
+    }
     @Override
     public void erasePlatform() {
         // TODO Auto-generated method stub
