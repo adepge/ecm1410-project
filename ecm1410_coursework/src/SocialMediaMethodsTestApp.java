@@ -17,6 +17,7 @@ public class SocialMediaMethodsTestApp {
             platform.changeAccountHandle("Germany","Belgium");
             System.out.println("Post id is:" + id);
             System.out.print(platform.showPostChildrenDetails(id));
+            System.out.println(platform.showAccount("Belgium"));
         } catch (IllegalHandleException e) {
             System.out.println("This handle has already been taken");
         } catch (InvalidHandleException e) {

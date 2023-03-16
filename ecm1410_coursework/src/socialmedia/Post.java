@@ -18,10 +18,10 @@ public abstract class Post implements Serializable {
     static final int POST_CHAR_LIMIT = 100;
 
     /** The total number of Post objects created (including deleted posts). */
-    static int numberofPosts = 0;
+    static int numberOfPosts = 0;
 
     /** The sequential numerical ID of the post. */
-    int postID;
+    int postId;
 
     /** The handle which is the author of the post. */
     String author;
@@ -30,11 +30,11 @@ public abstract class Post implements Serializable {
     String message;
 
     /**
-     * Getter method for {@link Post#postID}
+     * Getter method for {@link Post#postId}
      * @return post's ID.
      */
-    public final int getPostID(){
-        return postID;
+    public final int getPostId(){
+        return postId;
     }
 
     /**
@@ -52,6 +52,10 @@ public abstract class Post implements Serializable {
     public final String getAuthor(){
         return author;
     }
+
+    /**
+     * Setter method for {@link Post#author}
+     * @param handle author's handle
+     */
     public void setAuthor(String handle){this.author = handle;}
-    public void save(){}
 }

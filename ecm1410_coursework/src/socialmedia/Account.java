@@ -11,8 +11,8 @@ import java.io.Serializable;
  * @version 09-03-2023
  */
 public class Account implements Serializable {
-    /** The sequential numerical ID of the account. */
-    private int accountID;
+    /** The sequential numerical id of the account. */
+    private int accountId;
 
     /** Constant character limit for all account handles. */
     public static final int HANDLE_CHAR_LIMIT = 30;
@@ -31,14 +31,14 @@ public class Account implements Serializable {
 
     /**
      * Constructor which creates an Account object.
-     * Assigns a sequentially incrementing account ID.
+     * Assigns a sequentially incrementing account id.
      *
      * @param handle account's handle.
      */
     public Account(String handle){
         this.handle = handle;
         description = null;
-        accountID = numberOfAccounts++;
+        accountId = numberOfAccounts++;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Account implements Serializable {
     public Account(String handle, String description){
         this.handle = handle;
         this.description = description;
-        accountID = numberOfAccounts++;
+        accountId = numberOfAccounts++;
     }
 
     /**
@@ -61,18 +61,18 @@ public class Account implements Serializable {
      */
     @Deprecated
     public int delete(){
-        accountID = -1;
+        accountId = -1;
         handle = "[DELETED]";
         description = null;
-        return accountID;
+        return accountId;
     }
 
     /**
-     * Getter method for {@link Account#accountID}.
-     * @return account's ID.
+     * Getter method for {@link Account#accountId}.
+     * @return account's id.
      */
-    public int getAccountID(){
-        return accountID;
+    public int getAccountId(){
+        return accountId;
     }
 
     /**

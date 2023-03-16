@@ -11,7 +11,7 @@ package socialmedia;
 public class Endorsement extends Post{
 
     /** The ID of the parent post which is endorsed by this endorsement */
-    private int parentID;
+    private int parentId;
 
     /**
      * Constructor which creates an Endorsement object.
@@ -20,12 +20,18 @@ public class Endorsement extends Post{
      * @param handle author's handle.
      * @param postID parent post ID.
      */
-    public Endorsement(String handle, int postID){
-        parentID = postID;
-        this.postID = numberofPosts++;
+    public Endorsement(String handle, int postID, String message){
+        parentId = postID;
+        this.postId = numberOfPosts++;
         this.author = handle;
+        this.message = message;
     }
-    public final int getParentID(){
-        return parentID;
+
+    /**
+     * Getter method for {@link Endorsement#parentId}
+     * @return id of parent post.
+     */
+    public final int getParentId(){
+        return parentId;
     }
 }

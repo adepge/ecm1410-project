@@ -12,7 +12,7 @@ package socialmedia;
 public class Comment extends Post{
 
     /** The ID of the parent post in which the comment is linked to */
-    private int parentID;
+    private int parentId;
 
     /**
      * Constructor which creates a Comment object.
@@ -24,15 +24,24 @@ public class Comment extends Post{
      */
     public Comment(String handle, int postID, String message){
         this.message = message;
-        parentID = postID;
-        this.postID = numberofPosts++;
+        parentId = postID;
+        this.postId = numberOfPosts++;
         this.author = handle;
     }
 
+    /**
+     * Sets comment's parent as deleted.
+     * Sets {@link Comment#parentId} = -1.
+     */
     public final void setParentDeleted() {
-        parentID = -1;
+        parentId = -1;
     }
-    public final int getParent(){
-        return parentID;
+
+    /**
+     * Getter method for {@link Comment#parentId}
+     * @return id of parent post.
+     */
+    public final int getParentId(){
+        return parentId;
     }
 }

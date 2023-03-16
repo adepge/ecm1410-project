@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * SocialMedia is a minimally compiling, functioning implementor of
+ * SocialMedia is a functioning implementor of
  * the SocialMediaPlatform interface.
  *
  * @author Adam George
@@ -14,61 +14,33 @@ import java.util.Map;
  */
 public class SocialMedia implements SocialMediaPlatform, Serializable {
 
-    /**
-     * Key-value pair hashmap of account IDs to Account objects.
-     */
+    /** Key-value pair hashmap of account IDs to Account objects. */
     private Map<Integer,Account> accountIDs = new HashMap<>();
 
-    /**
-     * Key-value pair hashmap of account handles to Account objects.
-     */
+    /** Key-value pair hashmap of account handles to Account objects. */
     private Map<String,Account> accountHandles = new HashMap<>();
 
-    /**
-     * Key-value pair hashmap of post IDs to Post objects.
-     */
+    /** Key-value pair hashmap of post IDs to Post objects. */
     private Map<Integer,Post> Posts = new HashMap<>();
 
-    /**
-     * Key-value pair hashmap of post IDs to the number of endorsements the post under that ID has.
-     */
+    /** Key-value pair hashmap of post IDs to the number of endorsements the post under that ID has. */
     private Map<Integer,Integer> endorsementLeaderboard = new HashMap<>();
 
-    /**
-     * Key-value pair hashmap of account IDs to the number of endorsements the account has made.
-     */
+    /** Key-value pair hashmap of account IDs to the number of endorsements the account has made. */
     private Map<String, Integer> accountEndorsements = new HashMap<>();
-
-    /**
-     * This method checks if input string exceeds given character limit.
-     * Only returns true if string exceeds limit, or is empty.
-     *
-     * @param limit character limit.
-     * @param input string text.
-     * @return boolean if string exceeds character limit.
-     */
-    public boolean stringExceedsLimit(int limit, String input) {
-        if (input.length() > limit) {
-            return true;
-        } else if (input.length() == 0){
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     @Override
     public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
         if (stringExceedsLimit(Account.HANDLE_CHAR_LIMIT,handle) || handle.contains(" ")){
             throw new InvalidHandleException();
-        } else if(accountHandles.get(handle) != null){
+        } else if(accountHandles.containsKey(handle)){
             throw new IllegalHandleException();
         } else {
             Account newAccount;
             newAccount = new Account(handle);
-            accountIDs.put(newAccount.getAccountID(),newAccount);
+            accountIDs.put(newAccount.getAccountId(),newAccount);
             accountHandles.put(handle,newAccount);
-            return newAccount.getAccountID();
+            return newAccount.getAccountId();
         }
     }
 
@@ -76,32 +48,29 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
         if (stringExceedsLimit(Account.HANDLE_CHAR_LIMIT, handle) || handle.contains(" ")) {
             throw new InvalidHandleException();
-        } else if (accountHandles.get(handle) != null) {
+        } else if (accountHandles.containsKey(handle)) {
             throw new IllegalHandleException();
-        } else if (stringExceedsLimit(Account.DESC_CHAR_LIMIT, description)) {
-            // Needs replacing
-            throw new InvalidHandleException();
         } else {
             Account newAccount;
             newAccount = new Account(handle, description);
-            accountIDs.put(newAccount.getAccountID(),newAccount);
+            accountIDs.put(newAccount.getAccountId(),newAccount);
             accountHandles.put(handle,newAccount);
-            return newAccount.getAccountID();
+            return newAccount.getAccountId();
         }
 }
 
     @Override
     public void removeAccount(int id) throws AccountIDNotRecognisedException {
-        if (accountIDs.get(id) == null){
+        if (!accountIDs.containsKey(id)){
             throw new AccountIDNotRecognisedException();
         }  else {
             accountHandles.remove(accountIDs.get(id).getHandle());
             accountIDs.remove(id);
         }
         for (Post value : Posts.values()){
-            if (accountHandles.get(value.getAuthor()).getAccountID() == id ){
+            if (accountHandles.get(value.getAuthor()).getAccountId() == id ){
                 try {
-                    deletePost(value.getPostID());
+                    deletePost(value.getPostId());
                 } catch (PostIDNotRecognisedException ignored){}
             }
         }
@@ -110,16 +79,16 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
 
     @Override
     public void removeAccount(String handle) throws HandleNotRecognisedException {
-        if (accountHandles.get(handle) == null) {
+        if (!accountHandles.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         } else {
-            accountIDs.remove(accountHandles.get(handle).getAccountID());
+            accountIDs.remove(accountHandles.get(handle).getAccountId());
             accountHandles.remove(handle);
         }
         for (Post value : Posts.values()){
             if (accountHandles.get(value.getAuthor()).equals(handle) ){
                 try {
-                    deletePost(value.getPostID());
+                    deletePost(value.getPostId());
                 } catch (PostIDNotRecognisedException ignored){}
             }
         }
@@ -130,11 +99,11 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     @Override
     public void changeAccountHandle(String oldHandle, String newHandle)
             throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException {
-        if (accountHandles.get(oldHandle) == null) {
+        if (!accountHandles.containsKey(oldHandle)) {
             throw new HandleNotRecognisedException();
         } else if (stringExceedsLimit(Account.HANDLE_CHAR_LIMIT,newHandle)) {
             throw new InvalidHandleException();
-        } else if (accountHandles.get(newHandle) != null) {
+        } else if (accountHandles.containsKey(newHandle)) {
             throw new IllegalHandleException();
         } else {
             accountHandles.get(oldHandle).setHandle(newHandle);
@@ -150,7 +119,7 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
 
     @Override
     public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException/*,  InvalidDescriptionException */{
-        if (accountHandles.get(handle) == null) {
+        if (!accountHandles.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         } else {
             accountHandles.get(handle).setDescription(description);
@@ -159,22 +128,21 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
 
     @Override
     public String showAccount(String handle) throws HandleNotRecognisedException {
-        if (accountHandles.get(handle) == null) {
+        if (!accountHandles.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         }
         else {
-            String info = "ID: " + Integer.toString(accountHandles.get(handle).getAccountID()) +
-                    "\n" + "Handle: " + handle +
-                    "\n" + "Description: " + accountHandles.get(handle).getDescription() +
-                    "\n" + "Post count: "  + Integer.toString(postsByAccount(handle)) +
-                    "\n" + "Endorse count: " + Integer.toString(accountEndorsements.get(handle));
-            return info;
+            return String.format(	"ID: %1$s\n" +
+                                    "Handle: %2$s\n" +
+                                    "Post count: %3$s\n" +
+                                    "Endorse count: %4$s",
+                                    accountHandles.get(handle).getAccountId(), handle, countAccountPosts(handle), accountEndorsements.get(handle));
         }
     }
 
     @Override
     public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
-        if (accountHandles.get(handle) == null) {
+        if (!accountHandles.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         }
         else if (message.length() > OriginalPost.POST_CHAR_LIMIT || message.length() < 1){
@@ -182,34 +150,35 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
         }
         else {
             OriginalPost newPost = new OriginalPost(handle,message);
-            Posts.put(newPost.getPostID(),newPost);
-            endorsementLeaderboard.put(newPost.getPostID(), 0);
-            return newPost.getPostID();
+            Posts.put(newPost.getPostId(),newPost);
+            endorsementLeaderboard.put(newPost.getPostId(), 0);
+            return newPost.getPostId();
         }
     }
 
     @Override
     public int endorsePost(String handle, int id)
             throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
-        if (accountHandles.get(handle) == null) {
+        if (!accountHandles.containsKey(handle)) {
             throw new HandleNotRecognisedException();
-        } else if (Posts.get(id) == null){
+        } else if (!Posts.containsKey(id)){
             throw new PostIDNotRecognisedException();
         } else if (Posts.get(id) instanceof Endorsement) {
             throw new NotActionablePostException();
         } else {
-            Endorsement newEndorsement = new Endorsement(handle, id);
-            Posts.put(newEndorsement.getPostID(), newEndorsement);
+            String message = String.format("EP@%1$s: %2$s", Posts.get(id).getAuthor(), Posts.get(id).message);
+            Endorsement newEndorsement = new Endorsement(handle, id, message);
+            Posts.put(newEndorsement.getPostId(), newEndorsement);
             endorsementLeaderboard.put(id, endorsementLeaderboard.get(id) + 1);
             updateEndorsements();
-            return newEndorsement.getPostID();
+            return newEndorsement.getPostId();
         }
     }
 
     @Override
     public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
             PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
-        if (accountHandles.get(handle) == null) {
+        if (!accountHandles.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         } else if (!Posts.containsKey(id)){
             throw new PostIDNotRecognisedException();
@@ -219,9 +188,9 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
             throw new InvalidPostException();
         } else {
             Comment newComment = new Comment(handle, id, message);
-            Posts.put(newComment.getPostID(), newComment);
-            endorsementLeaderboard.put(newComment.getPostID(), 0);
-            return newComment.getPostID();
+            Posts.put(newComment.getPostId(), newComment);
+            endorsementLeaderboard.put(newComment.getPostId(), 0);
+            return newComment.getPostId();
         }
     }
 
@@ -232,10 +201,10 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
         } else {
             Posts.remove(id);
             for (Post value : Posts.values()){
-                if (value instanceof Comment && ((Comment) value).getParent() == id) {
+                if (value instanceof Comment && ((Comment) value).getParentId() == id) {
                     ((Comment) value).setParentDeleted();
-                } else if (value instanceof Endorsement && ((Endorsement) value).getParentID() == id){
-                    Posts.remove(value.getPostID());
+                } else if (value instanceof Endorsement && ((Endorsement) value).getParentId() == id){
+                    Posts.remove(value.getPostId());
                     updateEndorsements();
                 }
             }
@@ -243,80 +212,25 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
-    // "EP@" + [endorsed account handle] + ": " + [endorsed message]
     public String showIndividualPost(int id) throws PostIDNotRecognisedException {
         if (!Posts.containsKey(id)){
             throw new PostIDNotRecognisedException();
         } else if (Posts.get(id) instanceof Endorsement) {
-            String info = "ID: " + Integer.toString(id) +
-                    "\n" + "Account: " + Posts.get(id).getAuthor() +
-                    "\n" + "No. Endorsements: 0" +
-                    " | No. Comments: 0" +
-                    "\n" + "EP@" + Posts.get(((Endorsement) Posts.get(id)).getParentID()).getAuthor() + ": " +Posts.get(((Endorsement) Posts.get(id)).getParentID()).getMessage();
-            return info;
+            return String.format(   "ID: %1$s\n" +
+                                    "Account: %2$s\n" +
+                                    "No. Endorsements: %3$s | No. Comments: %3$s\n" +
+                                    "%4$s",
+                                    id, Posts.get(id).getAuthor(), 0, Posts.get(id).getMessage());
         } else {
-            String info = "ID: " + Integer.toString(id) +
-                    "\n" + "Account: " + Posts.get(id).getAuthor() +
-                    "\n" + "No. Endorsements: " + Integer.toString(endorsementLeaderboard.get(id)) +
-                    " | No. Comments: " + Integer.toString(countPostComments(id)) +
-                    "\n" + Posts.get(id).getMessage();
-            return info;
+            return String.format(   "ID: %1$s\n" +
+                                    "Account: %2$s\n" +
+                                    "No. Endorsements: %3$s | No. Comments: %4$s\n" +
+                                    "%5$s",
+                                    id, Posts.get(id).getAuthor(), endorsementLeaderboard.get(id), countPostComments(id), Posts.get(id).getMessage());
         }
     }
 
     @Override
-    /* The method builds a StringBuilder showing the details of the current post and all its children posts. The format is as follows (you can use tabs or spaces to represent indentation):
-    showIndividualPost(id)
-    |
-    [for reply: replies to the post sorted by ID]
-         |  > showIndividualPost(reply) */
-
-    /*See an example:
-  ID: 1
-  Account: user1
-  No. endorsements: 2 | No. comments: 3
-  I like examples.
-  |
-  | > ID: 3
-      Account: user2
-      No. endorsements: 0 | No. comments: 1
-      No more than me...
-      |
-      | > ID: 5
-          Account: user1
-          No. endorsements: 0 | No. comments: 1
-          I can prove!
-          |
-          | > ID: 6
-              Account: user2
-              No. endorsements: 0 | No. comments: 0
-              prove it
-  | > ID: 4
-      Account: user3
-      No. endorsements: 4 | No. comments: 0
-      Can't you do better than this?
-
-  | > ID: 7
-      Account: user5
-      No. endorsements: 0 | No. comments: 1
-      where is the example?
-      |
-      | > ID: 10
-          Account: user1
-          No. endorsements: 0 | No. comments: 0
-          This is the example!
-
-Continuing with the example, if the method is called for post ID=5 ( showIndividualPost(5)), the return would be:
-  ID: 5
-  Account: user1
-  No. endorsements: 0 | No. comments: 1
-  I can prove!
-  |
-  | > ID: 6
-      Account: user2
-      No. endorsements: 0 | No. comments: 0
-      prove it*/
-
     public StringBuilder showPostChildrenDetails(int id)
             throws PostIDNotRecognisedException, NotActionablePostException {
         if (!Posts.containsKey(id)){
@@ -326,8 +240,8 @@ Continuing with the example, if the method is called for post ID=5 ( showIndivid
             throw new NotActionablePostException();
         }
         else {
-            StringBuilder postFamilyInfo;
-            return findChildComments(id, postFamilyInfo= new StringBuilder(), 0);
+            StringBuilder postFamilyInfo = new StringBuilder();
+            return findChildComments(id, postFamilyInfo, 0);
             }
     }
 
@@ -396,7 +310,7 @@ Continuing with the example, if the method is called for post ID=5 ( showIndivid
         }
         for (String key : accountEndorsements.keySet()){
             if (accountEndorsements.get(key) == highestValue){
-                return accountHandles.get(key).getAccountID() ;
+                return accountHandles.get(key).getAccountId() ;
             }
         }
         return -1;
@@ -434,13 +348,30 @@ Continuing with the example, if the method is called for post ID=5 ( showIndivid
     }
 
     /**
-     * This method checks the number of posts the
+     * This method checks if input string exceeds given character limit.
      * Only returns true if string exceeds limit, or is empty.
      *
-     * @param handle account's handle
-     * @return number of posts
+     * @param limit character limit.
+     * @param input string text.
+     * @return boolean if string exceeds character limit.
      */
-    public int postsByAccount(String handle) {
+    private boolean stringExceedsLimit(int limit, String input) {
+        if (input.length() > limit) {
+            return true;
+        } else if (input.length() == 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * This method counts the number of posts the given account has made.
+     *
+     * @param handle account's handle.
+     * @return number of posts.
+     */
+    private int countAccountPosts(String handle) {
         int counter = 0;
         for (Post value: Posts.values()){
             if (value.getAuthor().equals(handle)){
@@ -450,41 +381,69 @@ Continuing with the example, if the method is called for post ID=5 ( showIndivid
         return counter;
     }
 
+    /** This method updates the number of endorsements each account has made. */
     private void updateEndorsements() {
         accountEndorsements = new HashMap<>();
         for (Post value : Posts.values()) {
             if (accountEndorsements.containsKey(value.getAuthor()) && !(value instanceof Endorsement)){
-                accountEndorsements.put(value.getAuthor(), accountEndorsements.get(value.getAuthor()) + endorsementLeaderboard.get(value.getPostID()));
+                accountEndorsements.put(value.getAuthor(), accountEndorsements.get(value.getAuthor()) + endorsementLeaderboard.get(value.getPostId()));
             } else {
-                accountEndorsements.put(value.getAuthor(), endorsementLeaderboard.get(value.getPostID()));
+                accountEndorsements.put(value.getAuthor(), endorsementLeaderboard.get(value.getPostId()));
             }
         }
     }
+
+    /**
+     * Counts the number of comments under a post
+     *
+     * @param id post id.
+     * @return number of comments
+     */
     private int countPostComments(int id) {
         int counter = 0;
         for (Post value : Posts.values()){
-            if (value instanceof Comment && ((Comment) value).getParent() == id) {
+            if (value instanceof Comment && ((Comment) value).getParentId() == id) {
                 counter += 1;
             }
         }
         return counter;
     }
 
+    /**
+     * Recursively builds a formatted {@link StringBuilder} object of all children posts.
+     *
+     * @param id post id.
+     * @return children posts.
+     */
     private StringBuilder findChildComments(int id, StringBuilder postFamilyInfo, int depth) {
         try {
             if (postFamilyInfo.length() == 0) {
                 postFamilyInfo.append(showIndividualPost(id));
             } else {
-                postFamilyInfo.append("\n" + " ".repeat(depth - 4) + "|\n" + " ".repeat(depth - 4) + "| > " + (showIndividualPost(id).indent(depth)).trim());
+                String indent = " ".repeat(depth - 4);
+                postFamilyInfo.append(String.format("\n%1$s|\n%1$s| > ", indent) + showIndividualPost(id).indent(depth).trim());
             }
-
-        }catch (PostIDNotRecognisedException ignore) {
-        }
+        } catch (PostIDNotRecognisedException ignore) {}
         for (Post value : Posts.values()){
-            if (value instanceof Comment && ((Comment) value).getParent() == id){
-                postFamilyInfo = findChildComments(value.getPostID(), postFamilyInfo, depth+4);
+            if (value instanceof Comment && ((Comment) value).getParentId() == id){
+                postFamilyInfo = findChildComments(value.getPostId(), postFamilyInfo, depth+4);
             }
         }
         return postFamilyInfo;
+    }
+
+    /**
+     * Gets parent {@link Post} object
+     *
+     * @param id child post id.
+     * @return parent post.
+     */
+    private Post getParentPost(int id){
+        Post childPost = Posts.get(id);
+        if(childPost instanceof Comment){
+            return Posts.get(((Comment) childPost).getParentId());
+        } else {
+            return Posts.get(((Endorsement) childPost).getParentId());
+        }
     }
 }

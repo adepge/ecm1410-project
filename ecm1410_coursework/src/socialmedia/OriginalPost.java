@@ -19,8 +19,7 @@ public class OriginalPost extends Post {
      */
     public OriginalPost(String handle,String message) {
         this.message = message;
-        postID = numberofPosts++;
+        postId = numberOfPosts++;
         this.author = handle;
     }
-
 }
