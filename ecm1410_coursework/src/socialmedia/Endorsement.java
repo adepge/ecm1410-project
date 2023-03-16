@@ -25,4 +25,7 @@ public class Endorsement extends Post{
         this.postID = numberofPosts++;
         this.author = handle;
     }
+    public final int getParentID(){
+        return parentID;
+    }
 }

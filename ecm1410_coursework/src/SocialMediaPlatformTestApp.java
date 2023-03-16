@@ -30,16 +30,19 @@ public class SocialMediaPlatformTestApp {
 		try {
 			id = platform.createAccount("my_handle");
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
-
+			assert (platform.createPost("my_handle","hello everyone this is my first post") == 0) : "post ID assigned incorrectly";
 			platform.removeAccount(id);
 			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
-
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
 		} catch (InvalidHandleException e) {
 			assert (false) : "InvalidHandleException thrown incorrectly";
 		} catch (AccountIDNotRecognisedException e) {
 			assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
+		} catch (HandleNotRecognisedException e) {
+			assert (false) : "HandleNotRecognisedException thrown incorrectly";
+		} catch (InvalidPostException e) {
+			assert (false) : "InvalidPostException thrown incorrectly";
 		}
 
 		Integer id2;

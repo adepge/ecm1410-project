@@ -22,11 +22,15 @@ public class Comment extends Post{
      * @param postID parent post ID.
      * @param message post's message.
      */
-    public void Comment(String handle, int postID, String message){
+    public Comment(String handle, int postID, String message){
         this.message = message;
         parentID = postID;
         this.postID = numberofPosts++;
         this.author = handle;
+    }
+
+    public final void setParentDeleted() {
+        parentID = -1;
     }
     public final int getParent(){
         return parentID;
