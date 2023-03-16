@@ -52,8 +52,6 @@ public abstract class Post implements Serializable {
     public final String getAuthor(){
         return author;
     }
-
-    public void delete(){}
-    public void erase(){}
+    public void setAuthor(String handle){this.author = handle;}
     public void save(){}
 }

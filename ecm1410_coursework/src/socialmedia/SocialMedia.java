@@ -140,6 +140,11 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
             accountHandles.get(oldHandle).setHandle(newHandle);
             accountHandles.put(newHandle,accountHandles.get(oldHandle));
             accountHandles.remove(oldHandle);
+            for (Post value : Posts.values()){
+                if (value.getAuthor().equals(oldHandle)){
+                    value.setAuthor(newHandle);
+                }
+            }
         }
     }
 
@@ -236,8 +241,6 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
             }
         }
     }
-
-
 
     @Override
     // "EP@" + [endorsed account handle] + ": " + [endorsed message]
