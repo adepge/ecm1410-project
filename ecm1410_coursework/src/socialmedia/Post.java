@@ -1,5 +1,7 @@
 package socialmedia;
 
+import java.io.Serializable;
+
 /**
  * The Post class is an abstract class which is the parent class
  * of {@link OriginalPost}, {@link Comment}, and {@link Endorsement}.
@@ -10,7 +12,7 @@ package socialmedia;
  * @author Ben Ellison
  * @version 01-03-2023
  */
-public abstract class Post {
+public abstract class Post implements Serializable {
 
     /** Constant character limit for all post messages. */
     static final int POST_CHAR_LIMIT = 100;

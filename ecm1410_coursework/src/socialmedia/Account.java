@@ -1,5 +1,7 @@
 package socialmedia;
 
+import java.io.Serializable;
+
 /**
  * The Account class is used to create accounts and implements
  * methods to access an accounts' relevant identifying information
@@ -8,7 +10,7 @@ package socialmedia;
  * @author Ben Ellison
  * @version 09-03-2023
  */
-public class Account {
+public class Account implements Serializable {
     /** The sequential numerical ID of the account. */
     private int accountID;
 
