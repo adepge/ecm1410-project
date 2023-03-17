@@ -51,5 +51,5 @@ Main objective: SocialMedia Class
 #### 16/03/23 - Development session 7
 Main objective: SocialMedia Class, Serialisation, Supporting classes
 
-**720052156 (Adam)** & **720052156 (Ben)**: Finished remaining methods in the SocialMedia class. Added SocialMediaMethodsTestApp.
+**720052156 (Adam)** & **720052156 (Ben)**: Finished remaining methods in the SocialMedia class. Added SocialMediaMethodsTestApp.  
 Deleted development branch, see [#5](https://github.com/adepge/social-media-backend-uok/pull/5) and [#6](https://github.com/adepge/social-media-backend-uok/pull/6)
