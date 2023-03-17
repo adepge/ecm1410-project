@@ -38,3 +38,17 @@ Main objective: SocialMedia Class
 Main objective: SocialMedia Class, Optimization
 
 **720052156 (Adam)**: 2 implemented methods. Committed directly to main branch.
+
+***
+
+#### 15/03/23 - Development session 6
+Main objective: SocialMedia Class
+
+**720052156 (Ben)**: Finished post methods. Committed directly to main branch.
+
+***
+
+#### 16/03/23 - Development session 7
+Main objective: SocialMedia Class, Serialisation, Supporting classes
+
+**720052156 (Adam)** & **720052156 (Ben)**: Finished remaining methods in the SocialMedia class. Added SocialMediaMethodsTestApp.
