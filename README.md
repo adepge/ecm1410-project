@@ -8,10 +8,6 @@ A social media platform backend written in Java for the University of Knowledge 
 - [Changelog](https://github.com/adepge/social-media-backend-uok/blob/main/ecm1410_coursework/res/changelog.md)
 - [JavaDoc](https://adepge.github.io/social-media-backend-uok/socialmedia/package-summary)
 ***
-__JavaDoc__
-
-<embed type="text/html" src="https://diogofpacheco.github.io/teaching/oop/socialmedia/package-summary.html" width="500" height="200">
-
 
 #### Collaborators
 
