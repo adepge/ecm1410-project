@@ -44,6 +44,7 @@ public class DualKeyMap<FirstKey, SecondKey, Value> implements Serializable {
      * @param key the key of either {@link FirstKey} or {@link SecondKey} type.
      * @return the value associated with the key.
      */
+    @SuppressWarnings("SuspiciousMethodCalls")
     public Value get(Object key) {
         if (firstMap.containsKey(key)) {
             return firstMap.get(key);
@@ -56,6 +57,7 @@ public class DualKeyMap<FirstKey, SecondKey, Value> implements Serializable {
      * Removes the mapping for a key from this map if it exists.
      * @param key the key of either {@link FirstKey} or {@link SecondKey} type.
      */
+    @SuppressWarnings("SuspiciousMethodCalls")
     public void remove(Object key) {
         firstMap.remove(key);
         secondMap.remove(key);
@@ -68,6 +70,7 @@ public class DualKeyMap<FirstKey, SecondKey, Value> implements Serializable {
      * @param key the key of either {@link FirstKey} or {@link SecondKey} type.
      * @return true if a mapping exists for the specified key in this map.
      */
+    @SuppressWarnings("SuspiciousMethodCalls")
     public boolean containsKey(Object key) {
         return firstMap.containsKey(key) || secondMap.containsKey(key);
     }

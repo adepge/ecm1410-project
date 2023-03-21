@@ -24,7 +24,7 @@ public class Account implements Serializable {
     private String description;
 
     /** The total number of Account objects created (including deleted accounts). */
-    private int numberOfAccounts = 0;
+    static int numberOfAccounts = 0;
 
     /** The number of posts made by the account */
     private int postCount = 0;

@@ -120,9 +120,10 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
             Account thisAccount = accounts.get(handle);
             return String.format(	"ID: %1$s\n" +
                                     "Handle: %2$s\n" +
-                                    "Post count: %3$s\n" +
-                                    "Endorse count: %4$s",
-                                    thisAccount.getAccountId(), handle, thisAccount.getPostCount() , thisAccount.getEndorseCount());
+                                    "Description: %3$s\n" +
+                                    "Post count: %4$s\n" +
+                                    "Endorse count: %5$s",
+                                    thisAccount.getAccountId(), handle, thisAccount.getDescription(), thisAccount.getPostCount(), thisAccount.getEndorseCount());
         }
     }
 
