@@ -15,7 +15,7 @@ import java.util.Map;
 public class SocialMedia implements SocialMediaPlatform, Serializable {
 
     /** (Multi-)key-value pair hashmap of account handles and ids to Account objects. */
-    private MultiKeyMap<String,Integer,Account> accounts = new MultiKeyMap<>();
+    private DualKeyMap<String,Integer,Account> accounts = new DualKeyMap<>();
 
     /** Key-value pair hashmap of post IDs to Post objects. */
     private Map<Integer,Post> posts = new HashMap<>();
@@ -295,6 +295,7 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     @Override
     public void erasePlatform() {
         accounts.clear();
+        posts.clear();
     }
 
     @Override
@@ -306,11 +307,17 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename));
-        Object obj = in.readObject();
-        accounts = (MultiKeyMap<String, Integer, Account>)obj;
-        posts = (Map<Integer, Post>)obj;
+        for(int i=0;i<2;i++){
+            Object obj = in.readObject();
+            if (obj instanceof DualKeyMap) {
+                accounts = (DualKeyMap<String, Integer, Account>) obj;
+            } else if (obj instanceof Map) {
+                posts = (Map<Integer, Post>) obj;
+            }
+        }
         in.close();
     }
 
@@ -323,11 +330,7 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
      * @return boolean if string exceeds character limit.
      */
     private boolean stringExceedsLimit(int limit, String input) {
-        if (input.length() > limit || input.length() == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return input.length() > limit || input.length() == 0;
     }
 
     /**

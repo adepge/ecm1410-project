@@ -1,4 +1,7 @@
 import socialmedia.*;
+
+import java.io.IOException;
+
 public class SocialMediaMethodsTestApp {
     public static void main(String[] args) {
         System.out.println("System compiled successfully...");
@@ -15,9 +18,17 @@ public class SocialMediaMethodsTestApp {
             platform.commentPost("UK", 1, "Hello!");
             platform.endorsePost("UK", 0);
             platform.changeAccountHandle("Germany","Belgium");
+            platform.savePlatform("platform.txt");
+            platform.erasePlatform();
+            platform.loadPlatform("platform.txt");
             System.out.println("Post id is:" + id);
             System.out.println(platform.showPostChildrenDetails(id));
             System.out.println(platform.showAccount("Belgium"));
+        } catch (IOException e) {
+            System.out.println("Some I/O Exception has occurred");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("The Class has not been found");
         } catch (IllegalHandleException e) {
             System.out.println("This handle has already been taken");
         } catch (InvalidHandleException e) {
