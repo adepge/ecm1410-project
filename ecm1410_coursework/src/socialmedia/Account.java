@@ -17,9 +17,6 @@ public class Account implements Serializable {
     /** Constant character limit for all account handles. */
     public static final int HANDLE_CHAR_LIMIT = 30;
 
-    /** Constant character limit for all account descriptions */
-    @Deprecated static final int DESC_CHAR_LIMIT = 100;
-
     /** The string handle unique to each account. */
     private String handle;
 
@@ -27,7 +24,13 @@ public class Account implements Serializable {
     private String description;
 
     /** The total number of Account objects created (including deleted accounts). */
-    public static int numberOfAccounts = 0;
+    private int numberOfAccounts = 0;
+
+    /** The number of posts made by the account */
+    private int postCount = 0;
+
+    /** The number of endorsements  made by the account */
+    private int endorsementCount = 0;
 
     /**
      * Constructor which creates an Account object.
@@ -112,4 +115,22 @@ public class Account implements Serializable {
     public void setDescription(String description){
         this.description = description;
     }
+
+    /** Increments {@link Account#postCount} by 1*/
+    public void addPostCount() {postCount += 1;}
+
+    /** Increments {@link Account#endorsementCount} by 1*/
+    public void addEndorseCount() {endorsementCount += 1;}
+
+    /**
+     * Getter method for {@link Account#postCount}.
+     * @return number of posts from account
+     */
+    public int getPostCount() {return postCount;}
+
+    /**
+     * Getter method for {@link Account#endorsementCount}.
+     * @return number of endorsements from account
+     */
+    public int getEndorseCount() {return endorsementCount;}
 }

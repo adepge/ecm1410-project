@@ -29,6 +29,12 @@ public abstract class Post implements Serializable {
     /** The message which belongs to the post. */
     String message;
 
+    /** The number of comments on the post */
+    private int commentCount = 0;
+
+    /** The number of endorsements on the post */
+    private int endorsementCount = 0;
+
     /**
      * Getter method for {@link Post#postId}
      * @return post's ID.
@@ -58,4 +64,22 @@ public abstract class Post implements Serializable {
      * @param handle author's handle
      */
     public void setAuthor(String handle){this.author = handle;}
+
+    /** Increments {@link OriginalPost#commentCount} by 1*/
+    public void addCommentCount() {commentCount += 1;}
+
+    /** Increments {@link OriginalPost#endorsementCount} by 1*/
+    public void addEndorseCount() {endorsementCount += 1;}
+
+    /**
+     * Getter method for {@link OriginalPost#commentCount}.
+     * @return number of comments on post
+     */
+    public int getCommentCount() {return commentCount;}
+
+    /**
+     * Getter method for {@link OriginalPost#endorsementCount}.
+     * @return number of endorsements on post
+     */
+    public int getEndorseCount() {return endorsementCount;}
 }
