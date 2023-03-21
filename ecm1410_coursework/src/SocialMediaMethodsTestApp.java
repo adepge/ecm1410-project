@@ -24,6 +24,7 @@ public class SocialMediaMethodsTestApp {
             System.out.println("Post id is:" + id);
             System.out.println(platform.showPostChildrenDetails(id));
             System.out.println(platform.showAccount("Belgium"));
+            System.out.println(platform.showAccount("UK"));
         } catch (IOException e) {
             System.out.println("Some I/O Exception has occurred");
             e.printStackTrace();
