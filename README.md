@@ -7,6 +7,7 @@ A social media platform backend written in Java for the University of Knowledge 
 - [Pair-programming information](https://vle.exeter.ac.uk/pluginfile.php/3588945/mod_resource/content/0/ECM1410_pair_programming_details.pdf)
 - [Changelog](https://github.com/adepge/social-media-backend-uok/blob/main/ecm1410_coursework/res/changelog.md)
 - [JavaDoc](https://adepge.github.io/social-media-backend-uok/socialmedia/package-summary)
+- [Testing](https://docs.google.com/document/d/1wAowiTpztDGp659pwOfPYnMOnTrHDJP8db8VZ5YLJHY/edit)
 ***
 
 #### Collaborators
