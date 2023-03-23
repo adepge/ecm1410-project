@@ -65,11 +65,17 @@ public abstract class Post implements Serializable {
      */
     public void setAuthor(String handle){this.author = handle;}
 
-    /** Increments {@link OriginalPost#commentCount} by 1*/
-    public void addCommentCount() {commentCount += 1;}
+    /**
+     * Setter method for  {@link OriginalPost#endorsementCount}
+     * @param commentCount number of comments on post
+     */
+    public void setCommentCount(int commentCount) {this.commentCount = commentCount;}
 
-    /** Increments {@link OriginalPost#endorsementCount} by 1*/
-    public void addEndorseCount() {endorsementCount += 1;}
+    /**
+     * Setter method for  {@link OriginalPost#endorsementCount}
+     * @param endorsementCount number of endorsements on post
+     */
+    public void setEndorseCount(int endorsementCount) {this.endorsementCount = endorsementCount;}
 
 
     /**

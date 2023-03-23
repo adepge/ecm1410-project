@@ -1,6 +1,7 @@
 package socialmedia;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ import java.util.Map;
  *
  * @author Adam George
  * @author Ben Ellison
- * @version 03-03-2023
+ * @version 23-03-2023
  */
 public class SocialMedia implements SocialMediaPlatform, Serializable {
 
@@ -49,17 +50,17 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
 
     @Override
     public void removeAccount(int id) throws AccountIDNotRecognisedException {
-        if (!accounts.containsKey(id)){
+        if (!accounts.containsKey(id)) {
             throw new AccountIDNotRecognisedException();
-        }  else {
-            accounts.remove(id);
-        }
-        for (Post value : posts.values()){
-            if (accounts.get(value.getAuthor()).equals(accounts.get(id))){
-                try {
-                    deletePost(value.getPostId());
-                } catch (PostIDNotRecognisedException ignored){}
+        } else {
+            for (Post value : posts.values()) {
+                if (accounts.get(value.getAuthor()).equals(accounts.get(id))) {
+                    try {
+                        deletePost(value.getPostId());
+                    } catch (PostIDNotRecognisedException ignored) {}
+                }
             }
+            accounts.remove(id);
         }
     }
 
@@ -135,7 +136,7 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
         if (!accounts.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         }
-        else if (message.length() > OriginalPost.POST_CHAR_LIMIT || message.length() < 1){
+        else if (stringExceedsLimit(Post.POST_CHAR_LIMIT, message)){
             throw new InvalidPostException();
         }
         else {
@@ -175,13 +176,13 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
             throw new PostIDNotRecognisedException();
         } else if (posts.get(id) instanceof Endorsement) {
             throw new NotActionablePostException();
-        }else if(message.length() > Post.POST_CHAR_LIMIT){
+        } else if (stringExceedsLimit(Post.POST_CHAR_LIMIT, message)){
             throw new InvalidPostException();
         } else {
             Comment newComment = new Comment(handle, id, message);
             posts.put(newComment.getPostId(), newComment);
-            posts.get(id).addCommentCount();
-            accounts.get(handle).addPostCount();
+            posts.get(id).setCommentCount(posts.get(id).getCommentCount() + 1);
+            accounts.get(handle).setPostCount(accounts.get(handle).getPostCount() + 1);
             return newComment.getPostId();
         }
     }
@@ -293,7 +294,7 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
 
     @Override
     public int getMostEndorsedAccount() {
-        int highestValue = 0;
+        int highestValue = -1; // This ensures that if there are accounts with no endorsements, the first account will be returned
         int mostEndorsedAccountId = -1;
         for (Account value : accounts.values()) {
             if (value.getEndorseCount() > highestValue) {
