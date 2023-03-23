@@ -29,7 +29,7 @@ public class Account implements Serializable {
     /** The number of posts made by the account */
     private int postCount = 0;
 
-    /** The number of endorsements  made by the account */
+    /** The number of endorsements on posts made by the account */
     private int endorsementCount = 0;
 
     /**
@@ -116,11 +116,18 @@ public class Account implements Serializable {
         this.description = description;
     }
 
-    /** Increments {@link Account#postCount} by 1*/
-    public void addPostCount() {postCount += 1;}
 
-    /** Increments {@link Account#endorsementCount} by 1*/
-    public void addEndorseCount() {endorsementCount += 1;}
+    /**
+     * Setter method for  {@link Account#postCount}
+     * @param postCount number of posts this account has made
+     */
+    public void setPostCount(int postCount) {this.postCount = postCount;}
+
+    /**
+     * Setter method for  {@link Account#endorsementCount}
+     * @param endorsementCount number of posts this account has made
+     */
+    public void setEndorseCount(int endorsementCount) {this.endorsementCount = endorsementCount;}
 
     /**
      * Getter method for {@link Account#postCount}.

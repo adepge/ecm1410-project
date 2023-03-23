@@ -10,21 +10,38 @@ public class SocialMediaMethodsTestApp {
             platform.createAccount("Germany", "The country in Europe");
             platform.createAccount("UK", "The country in Europe (but not in the EU)");
             int id = platform.createPost("Germany", "We are a country in Europe");
-            platform.commentPost("Germany", 0, "Guten tag");
-            platform.commentPost("Germany", 1, "(That means Hello)");
-            platform.commentPost("Germany", 2, "...In German");
-            platform.commentPost("Germany", 0, "We lke beer");
-            platform.commentPost("UK", 2, "you alright mate");
-            platform.commentPost("UK", 1, "Hello!");
-            platform.endorsePost("UK", 0);
+//            platform.commentPost("Germany", 0, "Guten tag");
+//            platform.commentPost("Germany", 1, "(That means Hello)");
+//            platform.commentPost("Germany", 2, "...In German");
+//            platform.commentPost("Germany", 0, "We like beer");
+//            platform.commentPost("UK", 2, "you alright mate");
+//            platform.createPost("UK",  "Hello!");
+            for(Integer i=1;i<5000;i++){
+                platform.commentPost("Germany",i-1, "This is post number " + i.toString());
+            }
+//            for(Integer i=1;i<50;i++){
+//                platform.commentPost("UK",i-1, "This is also post number " + i.toString());
+//                platform.endorsePost("UK",i-1);
+//            }
+            int endorseid = platform.endorsePost("UK", 0);
             platform.changeAccountHandle("Germany","Belgium");
+            platform.updateAccountDescription("Belgium","Home of French Fries");
+//            platform.removeAccount("UK");
             platform.savePlatform("platform.txt");
             platform.erasePlatform();
             platform.loadPlatform("platform.txt");
-            System.out.println("Post id is:" + id);
-            System.out.println(platform.showPostChildrenDetails(id));
+//            platform.deletePost(4);
+//            platform.deletePost(endorseid);
+//            System.out.println(platform.showIndividualPost(endorseid));
+//            System.out.println(platform.showPostChildrenDetails(0));
             System.out.println(platform.showAccount("Belgium"));
-            System.out.println(platform.showAccount("UK"));
+//            System.out.println(platform.showAccount("UK"));
+            System.out.println("\nThe most endorsed account id is: " + platform.getMostEndorsedAccount());
+            System.out.println("The most endorsed post id is: " + platform.getMostEndorsedPost());
+            System.out.println("\nTotal number of accounts on the platform: " + platform.getNumberOfAccounts());
+            System.out.println("Total number of original posts on the platform: " + platform.getTotalOriginalPosts());
+            System.out.println("Total number of comments on the platform: " + platform.getTotalCommentPosts());
+            System.out.println("Total number of endorsements posts on the platform: " + platform.getTotalEndorsmentPosts());
         } catch (IOException e) {
             System.out.println("Some I/O Exception has occurred");
             e.printStackTrace();

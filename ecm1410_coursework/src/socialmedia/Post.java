@@ -71,6 +71,7 @@ public abstract class Post implements Serializable {
     /** Increments {@link OriginalPost#endorsementCount} by 1*/
     public void addEndorseCount() {endorsementCount += 1;}
 
+
     /**
      * Getter method for {@link OriginalPost#commentCount}.
      * @return number of comments on post
