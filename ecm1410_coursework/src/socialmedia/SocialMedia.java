@@ -16,13 +16,14 @@ import java.util.Map;
 public class SocialMedia implements SocialMediaPlatform, Serializable {
 
     /** (Multi-)key-value pair hashmap of account handles and ids to Account objects. */
-    private DualKeyMap<String,Integer,Account> accounts = new DualKeyMap<>();
+    private DualKeyMap<Integer,String,Account> accounts = new DualKeyMap<>();
 
     /** Key-value pair hashmap of post IDs to Post objects. */
     private Map<Integer,Post> posts = new HashMap<>();
 
     @Override
-    public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
+    public int createAccount(String handle)
+            throws IllegalHandleException, InvalidHandleException {
         if (stringExceedsLimit(Account.HANDLE_CHAR_LIMIT,handle) || handle.contains(" ")){
             throw new InvalidHandleException();
         } else if(accounts.containsKey(handle)){
@@ -36,7 +37,8 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
-    public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
+    public int createAccount(String handle, String description)
+            throws IllegalHandleException, InvalidHandleException {
         if (stringExceedsLimit(Account.HANDLE_CHAR_LIMIT, handle) || handle.contains(" ")) {
             throw new InvalidHandleException();
         } else if (accounts.containsKey(handle)) {
@@ -49,7 +51,8 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
 }
 
     @Override
-    public void removeAccount(int id) throws AccountIDNotRecognisedException {
+    public void removeAccount(int id)
+            throws AccountIDNotRecognisedException {
         if (!accounts.containsKey(id)) {
             throw new AccountIDNotRecognisedException();
         } else {
@@ -65,7 +68,8 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
-    public void removeAccount(String handle) throws HandleNotRecognisedException {
+    public void removeAccount(String handle)
+            throws HandleNotRecognisedException {
         if (!accounts.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         }
@@ -107,7 +111,8 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
-    public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException/*,  InvalidDescriptionException */{
+    public void updateAccountDescription(String handle, String description)
+            throws HandleNotRecognisedException/*,  InvalidDescriptionException */{
         if (!accounts.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         } else {
@@ -116,7 +121,8 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
-    public String showAccount(String handle) throws HandleNotRecognisedException {
+    public String showAccount(String handle)
+            throws HandleNotRecognisedException {
         if (!accounts.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         }
@@ -132,7 +138,8 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
-    public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
+    public int createPost(String handle, String message)
+            throws HandleNotRecognisedException, InvalidPostException {
         if (!accounts.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         }
@@ -168,8 +175,8 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
-    public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
-            PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
+    public int commentPost(String handle, int id, String message)
+            throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
         if (!accounts.containsKey(handle)) {
             throw new HandleNotRecognisedException();
         } else if (!posts.containsKey(id)){
@@ -188,7 +195,8 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
-    public void deletePost(int id) throws PostIDNotRecognisedException {
+    public void deletePost(int id)
+            throws PostIDNotRecognisedException {
         if (!posts.containsKey(id)){
             throw new PostIDNotRecognisedException();
         } else {
@@ -212,7 +220,8 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
     }
 
     @Override
-    public String showIndividualPost(int id) throws PostIDNotRecognisedException {
+    public String showIndividualPost(int id)
+            throws PostIDNotRecognisedException {
         if (!posts.containsKey(id)){
             throw new PostIDNotRecognisedException();
         } else {
@@ -326,7 +335,7 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
         for(int i=0;i<2;i++){
             Object obj = in.readObject();
             if (obj instanceof DualKeyMap) {
-                accounts = (DualKeyMap<String, Integer, Account>) obj;
+                accounts = (DualKeyMap<Integer, String, Account>) obj;
             } else if (obj instanceof Map) {
                 posts = (Map<Integer, Post>) obj;
             }

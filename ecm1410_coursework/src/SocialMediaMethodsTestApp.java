@@ -7,35 +7,94 @@ public class SocialMediaMethodsTestApp {
         System.out.println("System compiled successfully...");
         SocialMedia platform = new SocialMedia();
         try {
+
+            //Account Creation
             platform.createAccount("Germany", "The country in Europe");
             platform.createAccount("UK", "The country in Europe (but not in the EU)");
+            platform.createAccount("France", "Another country in Europe");
+            platform.createAccount("Netherlands");
+//            platform.createAccount("Netherlands", "Yet another country in Europe");
+            assert (platform.getNumberOfAccounts() == 4) : "number of accounts registered in the system does not match";
+
+
+            //Original Post Creation
             int id = platform.createPost("Germany", "We are a country in Europe");
-//            platform.commentPost("Germany", 0, "Guten tag");
-//            platform.commentPost("Germany", 1, "(That means Hello)");
-//            platform.commentPost("Germany", 2, "...In German");
-//            platform.commentPost("Germany", 0, "We like beer");
-//            platform.commentPost("UK", 2, "you alright mate");
+            assert (id == 0) : "post id assigned incorrectly";
+            assert (platform.getTotalOriginalPosts() == 1) : "number of original posts in the system does not match";
+
+            //Comment Creation
+            platform.commentPost("France", 0, "Guten tag");
+            platform.commentPost("Netherlands", 1, "(That means Hello)");
+            platform.commentPost("Netherlands", 2, "...In German");
+            platform.commentPost("Germany", 0, "We like beer");
+            platform.commentPost("UK", 2, "you alright mate");
+            assert (platform.getTotalCommentPosts() == 5) : "number of original posts in the system does not match";
+
+//            //Mass Original Post Creation
 //            platform.createPost("UK",  "Hello!");
-            for(Integer i=1;i<5000;i++){
-                platform.commentPost("Germany",i-1, "This is post number " + i.toString());
-            }
-//            for(Integer i=1;i<50;i++){
+//            for(Integer i=1;i<5000;i++){
+//                platform.createPost("Germany","This is post number " + i.toString());
+//            }
+
+            //Mass Comment & Endorsement Creation
+//            for(Integer i=100;i<150;i++){
 //                platform.commentPost("UK",i-1, "This is also post number " + i.toString());
 //                platform.endorsePost("UK",i-1);
 //            }
-            int endorseid = platform.endorsePost("UK", 0);
+
+            //Endorsement Creation
+            platform.endorsePost("UK", 1);
+            int endorseid = platform.endorsePost("UK", 1);
+            platform.endorsePost("UK", 2);
+            platform.endorsePost("UK", 2);
+            assert (platform.getTotalEndorsmentPosts() == 4) : "number of endorsements in the system does not match";
+            assert (platform.getMostEndorsedPost() == 1) : "most endorsed post incorrectly returned";
+            assert (platform.getMostEndorsedAccount() == 2) : "most endorsed account incorrectly returned";
+
+            //Account Modification
             platform.changeAccountHandle("Germany","Belgium");
-            platform.updateAccountDescription("Belgium","Home of French Fries");
-//            platform.removeAccount("UK");
+            platform.updateAccountDescription("Belgium","Germany");
+//            platform.updateAccountDescription("Belgium","");
+            platform.changeAccountHandle("Belgium","Germany");
+            platform.changeAccountHandle("UK","Germany");
+
+
+
+            //I/O check
             platform.savePlatform("platform.txt");
             platform.erasePlatform();
+
+            assert (platform.getNumberOfAccounts() == 0) : "SocialMedia platform not empty as required.";
+            assert (platform.getTotalOriginalPosts() == 0) : "SocialMedia platform not empty as required.";
+            assert (platform.getTotalCommentPosts() == 0) : "SocialMedia platform not empty as required.";
+            assert (platform.getTotalEndorsmentPosts() == 0) : "SocialMedia platform not empty as required.";
+
             platform.loadPlatform("platform.txt");
+
+            assert (platform.getNumberOfAccounts() != 0) : "SocialMedia platform did not load correctly.";
+            assert (platform.getTotalOriginalPosts() != 0) : "SocialMedia platform not load correctly.";
+            assert (platform.getTotalCommentPosts() != 0) : "SocialMedia platform not load correctly.";
+            assert (platform.getTotalEndorsmentPosts() != 0) : "SocialMedia platform not load correctly.";
+
+            //Post Deletion
 //            platform.deletePost(4);
-//            platform.deletePost(endorseid);
-//            System.out.println(platform.showIndividualPost(endorseid));
+//            platform.deletePost(0);
+
+            //Account Deletion
+//            platform.removeAccount("UK");
+//            assert (platform.getNumberOfAccounts() == 3) : "number of accounts registered in the system does not match";
+
+            //Post formatting
+//            System.out.println(platform.showIndividualPost(-1));
+            System.out.println(platform.showIndividualPost(endorseid));
 //            System.out.println(platform.showPostChildrenDetails(0));
-            System.out.println(platform.showAccount("Belgium"));
-//            System.out.println(platform.showAccount("UK"));
+
+            //Account Detail formatting
+            System.out.println("\n" + platform.showAccount("Germany"));
+            System.out.println("\n" + platform.showAccount("Netherlands"));
+
+
+            //Data trackers
             System.out.println("\nThe most endorsed account id is: " + platform.getMostEndorsedAccount());
             System.out.println("The most endorsed post id is: " + platform.getMostEndorsedPost());
             System.out.println("\nTotal number of accounts on the platform: " + platform.getNumberOfAccounts());
