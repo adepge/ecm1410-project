@@ -6,6 +6,10 @@ public class SocialMediaMethodsTestApp {
     public static void main(String[] args) {
         System.out.println("System compiled successfully...");
         SocialMedia platform = new SocialMedia();
+        assert (platform.getNumberOfAccounts() == 0) : "Initial SocialMediaPlatform not empty as required.";
+        assert (platform.getTotalOriginalPosts() == 0) : "Initial SocialMediaPlatform not empty as required.";
+        assert (platform.getTotalCommentPosts() == 0) : "Initial SocialMediaPlatform not empty as required.";
+        assert (platform.getTotalEndorsmentPosts() == 0) : "Initial SocialMediaPlatform not empty as required.";
         try {
 
             //Account Creation
@@ -101,23 +105,31 @@ public class SocialMediaMethodsTestApp {
             System.out.println("Total number of original posts on the platform: " + platform.getTotalOriginalPosts());
             System.out.println("Total number of comments on the platform: " + platform.getTotalCommentPosts());
             System.out.println("Total number of endorsements posts on the platform: " + platform.getTotalEndorsmentPosts());
+
+            //Error catches
         } catch (IOException e) {
-            System.out.println("Some I/O Exception has occurred");
-            e.printStackTrace();
+            assert (false) : "IOException thrown correctly";
         } catch (ClassNotFoundException e) {
-            System.out.println("The Class has not been found");
+            e.printStackTrace();
+            assert (false) : "ClassNotFoundException thrown correctly";
         } catch (IllegalHandleException e) {
-            System.out.println("This handle has already been taken");
+            e.printStackTrace();
+            assert (false) : "IllegalHandleException thrown correctly";
         } catch (InvalidHandleException e) {
-            System.out.println("This handle is too long!");
+            e.printStackTrace();
+            assert (false) : "InvalidHandleException thrown correctly";
         } catch (HandleNotRecognisedException e) {
-            System.out.println("This handle doesn't exist!");
+            e.printStackTrace();
+            assert (false) : "HandleNotRecognised thrown correctly";
         } catch (InvalidPostException e) {
-            System.out.println("This post is too long!");
+            e.printStackTrace();
+            assert (false) : "InvalidPostException thrown correctly";
         } catch (PostIDNotRecognisedException e) {
-            System.out.println("Post ID doesn't exist!");
+            e.printStackTrace();
+            assert (false) : "PostIDNotRecognised thrown correctly";
         } catch (NotActionablePostException e) {
-            System.out.println("This post is non-actionable!");
+            e.printStackTrace();
+            assert (false) : "NotActionablePostException thrown correctly";
         }
     }
 }

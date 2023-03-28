@@ -31,7 +31,7 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
         } else {
             Account newAccount;
             newAccount = new Account(handle);
-            accounts.put(handle, newAccount.getAccountId(), newAccount);
+            accounts.put(newAccount.getAccountId(), handle, newAccount);
             return newAccount.getAccountId();
         }
     }
@@ -45,7 +45,7 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
             throw new IllegalHandleException();
         } else {
             Account newAccount = new Account(handle, description);
-            accounts.put(handle, newAccount.getAccountId(), newAccount);
+            accounts.put(newAccount.getAccountId(), handle, newAccount);
             return newAccount.getAccountId();
         }
 }
@@ -100,7 +100,7 @@ public class SocialMedia implements SocialMediaPlatform, Serializable {
         } else {
             accounts.get(oldHandle).setHandle(newHandle);
             int id = accounts.get(oldHandle).getAccountId();
-            accounts.put(newHandle,id,accounts.get(id));
+            accounts.put(id,newHandle,accounts.get(id));
             accounts.remove(oldHandle);
             for (Post value : posts.values()){
                 if (value.getAuthor().equals(oldHandle)){
